@@ -37,7 +37,12 @@ class UserHandler extends DefaultHandler {
         boolean col_value = false;
         boolean attr = false;
         boolean attr_2 = false;
-     
+        boolean attri = false;
+        String  ID;
+        HashSet<Integer> persons = new HashSet<>();
+        // File file = new File("test_ashrafi.txt");
+        // file.createNewFile();
+        // FileWriter writer = new FileWriter(file);     
 
 
     @Override
@@ -45,22 +50,22 @@ class UserHandler extends DefaultHandler {
         try{
         
 
-            // System.out.println("Man Injam");
-                // fixme
-
                 if (qName.equalsIgnoreCase("ATTRIBUTES")){
-                    System.out.println("Man Injam (ATTRIBUTES)");
+                    // System.out.println("Man Injam (ATTRIBUTES)");
                     attr = true;
                 }if (qName.equalsIgnoreCase("ATTRIBUTE")){
-                    System.out.println("Man Injam (ATTRIBUTE)");
-                    attr = true;
+                    // System.out.println("Man Injam (ATTRIBUTE)");
+                    attri = true;
+                    String name;
+                    name = attributes.getValue("NAME");
                 }if (qName.equalsIgnoreCase("ATTR-VALUE")){
-                    System.out.println("Man Injam (ATTR-VALUE) ");
+                    // System.out.println("Man Injam (ATTR-VALUE) ");
                     attr_2 = true;
+                    ID = attributes.getValue("ITEM-ID");
                 }if(qName.equalsIgnoreCase("COL-VALUE")){
-                    System.out.println("Man Injam (COL-VALUE)");
+                    // System.out.println("Man Injam (COL-VALUE)");
                     col_value = true;
-                    System.out.println("END The first Algorithm .");
+                    // System.out.println("END The first Algorithm .");
                 }
             }catch(Exception g){
                 System.out.println("Exception2");
@@ -70,40 +75,50 @@ class UserHandler extends DefaultHandler {
             
 
 //the second Algorithm .
-
+   @Override
+     public void endElement(String uri, 
+        String localName, String qName) throws SAXException {
+        if (qName.equalsIgnoreCase("COL-VALUE")) {
+           col_value = false;
+        }else if (qName.equalsIgnoreCase("ATTRIBUTES")){
+            attr = false;
+            // writer.close();
+            System.out.println(persons);
+            }
+     }
 
     @Override
     public void characters(char ch[],int start, int length)throws SAXException {
-        try{
         if (col_value){        
-            System.out.println("Characters");
-            File f = null;
-      boolean bool = false;
+            String str = new String(ch, start, length);
+            if (Objects.equals(str , "journal")){
+              try{
+                  persons.add(Integer.parseInt(ID));
+
+                  // writer.write(ID+"\n"); 
+                  // writer.flush(); //flush the writer
+
+                  // create a file reader Object :
+                  //FileReader fr = new FileReader(file);
+                  //char [] a = new char[50];
+                  //fr.read(a);
+                  //for(char c : a)
+                  // fr.close();
+
+
+              }catch(Exception e){
+                 System.out.println("Cant create txt file :(");
+                 e.printStackTrace();
+              }
       
-      try{
-          File file = new File("test_ashrafi.txt");
-          file.createNewFile();
-          FileWriter writer = new FileWriter(file);
-          writer.write("This is an example"); 
-          writer.flush(); //flush the writer
-          writer.close();
-          // create a file reader Object :
-          FileReader fr = new FileReader(file);
-          char [] a = new char[50];
-          fr.read(a);
-          for(char c : a)
-            System.out.println(c);
-          fr.close();
-
-
-      }catch(Exception e){
-         System.out.println("Cant create txt file :(");
-         e.printStackTrace();
-      }
-        }
-    }catch(Exception e){
-        System.out.println("Exception3");
+            }
+        
         //e.printStackTrace();
         }
+        else if (attri){
+          String str = new String(ch, start, length);
+            if (Objects.equals(str , "title")){
+        }
     }
+  }
 }
