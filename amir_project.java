@@ -1,3 +1,4 @@
+//import the Module
 import java.io.*;
 import java.io.File;
 import java.lang.Integer;
@@ -14,7 +15,7 @@ import org.xml.sax.SAXException;
 
 
 
-class partB {
+class amir_project {
     public static void main(String[] args){
 
 
@@ -57,7 +58,6 @@ class UserHandler extends DefaultHandler {
         if (qName.equalsIgnoreCase("ATTRIBUTES")) {
             attr = true;
         }
-
         if (qName.equalsIgnoreCase("ATTRIBUTE")) {
             attri = true;
             name = attributes.getValue("NAME");
@@ -115,6 +115,5 @@ class UserHandler extends DefaultHandler {
                 titles.add(str);
             }
         }
-
     }
 }
